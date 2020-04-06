@@ -3,7 +3,7 @@ import time
 import logging
 import subprocess
 
-class voice_to_text:
+class voiceTotext:
 
     def __init__(self,chat_id,voice,config):
         self.chat_id = chat_id
@@ -64,5 +64,5 @@ class voice_to_text:
 
 
 if __name__ == '__main__':
-    print(voice_to_text('1231231',"voice/1123223001-1586079280.oga").run())
+    print(voiceTotext('1231231', "voice/1123223001-1586079280.oga").run())
 

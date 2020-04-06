@@ -1,6 +1,6 @@
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, Filters
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from voice_to_text import voice_to_text
+from voiceTotext import voiceTotext
 import logging
 
 class auController:
@@ -56,7 +56,7 @@ class auController:
         # 用户发送的语音文件 {'file_id': '*', 'file_size': 78679, 'file_path': 'https://api.telegram.org/file/*:*/voice/file_10.oga'}
         voice = context.bot.get_file(update.message.voice)
         self.logger.info(update.message.from_user['first_name']+" --- voice to text --- "+voice['file_path'])
-        text = voice_to_text(update.message.from_user['id'],voice,self.configs).run()
+        text = voiceTotext(update.message.from_user['id'], voice, self.configs).run()
         keyboard = [[InlineKeyboardButton(text="Forward", url='https://t.me/share/url?url='+text)]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text(text,reply_markup=reply_markup)
