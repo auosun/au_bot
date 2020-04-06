@@ -42,7 +42,7 @@ class auController:
         print(update.message.from_user['first_name']+' get proxy . userinfo:'+str(update.message.from_user))
         self.logger.info(update.message.from_user)
         reply_text = '代理分发\n获取MTP代理，可发送 /proxy mtp\n获取其他协议代理请按一下格式输入：\n/proxy <password> <type>\ntype可选参数:' \
-                     '\nhttp socks v2ray switch'
+                     '\nhttp socks v2ray switch ss'
         if(len(context.args)):
             reply_text = self.configs.get_proxy(context.args)
             self.logger.info(reply_text)
