@@ -13,3 +13,6 @@ class auConfigs():
 
         # ffmpeg file address
         self.ffmpeg = 'ffmpeg'
+
+    def get_token(self):
+        return self.token

@@ -1,6 +1,6 @@
 #coding:utf-8
 
-from config_test import auConfigs
+from config import auConfigs
 from controller import auController
 from telegram.ext import Updater
 
@@ -8,7 +8,7 @@ from telegram.ext import Updater
 configs = auConfigs()
 
 def main():
-    updater = Updater(configs.token,use_context=True,request_kwargs=configs.proxy)
+    updater = Updater(configs.get_token(),use_context=True,request_kwargs=configs.proxy)
     dispatcher = updater.dispatcher
     auController(dispatcher=dispatcher,config=configs)
     updater.start_polling()
