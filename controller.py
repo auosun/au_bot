@@ -22,7 +22,7 @@ class auController:
     def hsh(self,update,context):
         chat_id = update.effective_chat.id
         reply_text = "你谁啊？整啥玩意儿就输 hsh啊！"
-        if chat_id == 938859634:
+        if chat_id == self.configs.hsh_chat_id:
             reply_text = "Hi, Zi Mi, Have a nice day!"
         update.message.reply_text(reply_text)
 
