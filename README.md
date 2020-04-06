@@ -1,9 +1,10 @@
 # au_bot
-auosun's bot
+auosun's bot  
+https://t.me/auosun_bot
 
 ### 1.0.1 
 4/5  
-语音转文字 功能开发
+功能开发 语音转文字 
 
 ### 1.0.2 
 4/6  
