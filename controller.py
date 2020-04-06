@@ -4,8 +4,6 @@ from voiceTotext import voiceTotext
 import logging
 
 class auController:
-    # logging.basicConfig(filename='auController.log', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 
     def __init__(self,dispatcher,config):
         self.logger = logging.getLogger("auController")
@@ -16,7 +14,7 @@ class auController:
     # 开始提示
     def start(self,update,context):
         chat_id = update.effective_chat.id
-        update.message.reply_text("你好,我是一个机器人\n我的名字叫 Au ，你会喜欢我的")
+        update.message.reply_text("你好,我叫 Au\n/help 获取帮助，你会喜欢我的")
 
     # hsh彩蛋
     def hsh(self,update,context):
@@ -31,7 +29,8 @@ class auController:
         user_info = update.message.from_user
         reply_text = '你好，'+user_info['first_name']+'\n我是au,目前集成功能：\n' \
                                            '1. /voice 语音转文字\n' \
-                                           '2. 待添加……'
+                                           '2. /proxy 代理分发\n' \
+                                           '3. 待添加……'
         update.message.reply_text(reply_text)
 
     def voice(self,update,context):
@@ -39,6 +38,15 @@ class auController:
                      '如遇翻译不准确，本人学艺不精，无法修正'
         update.message.reply_text(reply_text)
 
+    def proxy(self,update,context):
+        print(update.message.from_user['first_name']+' get proxy . userinfo:'+str(update.message.from_user))
+        self.logger.info(update.message.from_user)
+        reply_text = '代理分发\n获取MTP代理，可发送 /proxy mtp\n获取其他协议代理请按一下格式输入：\n/proxy <password> <type>\ntype可选参数:' \
+                     '\nhttp socks v2ray switch'
+        if(len(context.args)):
+            reply_text = self.configs.get_proxy(context.args)
+            self.logger.info(reply_text)
+        update.message.reply_text(reply_text)
 
     # 用户交流 复读用户发送消息 或者 其他
     def echo(self,update,context):
@@ -51,7 +59,7 @@ class auController:
 
     # 语音转文字 baidu api接口
     def voice_to_text(self,update,context):
-        print(update.message.from_user)
+        print(update.message.from_user['first_name']+' voice to text . userinfo:'+str(update.message.from_user))
         self.logger.info(update.message.from_user)
         # 用户发送的语音文件 {'file_id': '*', 'file_size': 78679, 'file_path': 'https://api.telegram.org/file/*:*/voice/file_10.oga'}
         voice = context.bot.get_file(update.message.voice)
@@ -75,6 +83,7 @@ class auController:
         hsh_handler = CommandHandler('hsh',self.hsh)
         help_handler = CommandHandler('help', self.help)
         voice_handler = CommandHandler('voice',self.voice)
+        proxy_handler = CommandHandler('proxy',self.proxy)
         echo_handler = MessageHandler(Filters.text,self.echo)
         stt_handler = MessageHandler(Filters.voice,self.voice_to_text)
 
@@ -84,6 +93,7 @@ class auController:
         handlers.append(hsh_handler)
         handlers.append(help_handler)
         handlers.append(voice_handler)
+        handlers.append(proxy_handler)
         handlers.append(echo_handler)
         handlers.append(stt_handler)
 
