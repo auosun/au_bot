@@ -2,3 +2,7 @@ config.py
 config_test.py
 voice/
 TestExample/
+__pycache__/
+.idea/
+*.pyc
+*.xml
