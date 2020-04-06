@@ -1,6 +1,6 @@
 #coding:utf-8
 
-from config import auConfigs
+from config_test import auConfigs
 from controller import auController
 from telegram.ext import Updater
 

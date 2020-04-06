@@ -48,7 +48,7 @@ class voice_to_text:
 
     # 调用baidu api接口转换为文字
     def to_baidu(self,pcmpath):
-        result = self.client.asr(self.get_file_content(pcmpath), 'pcm', 16000, {'dev_pid': 1936,})
+        result = self.client.asr(self.get_file_content(pcmpath), 'pcm', 16000, {'dev_pid': 1537,})
         text = ''
         if(result['err_no']==0):
             text = result['result'][-1]
