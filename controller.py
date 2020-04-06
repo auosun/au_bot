@@ -46,7 +46,7 @@ class auController:
         self.logger.info(update.message.from_user['first_name']+" send message: "+text)
         reply_text = text
         if(text == 'hsh' and update.message.from_user['id']==self.configs.hsh_chat_id):
-            reply_text = "你好，shihua12，很高兴认识你。"
+            reply_text = "你好，shihua，很高兴认识你。"
         update.message.reply_text(reply_text)
 
     # 语音转文字 baidu api接口
