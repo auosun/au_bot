@@ -41,7 +41,7 @@ class auController:
     def proxy(self,update,context):
         print(update.message.from_user['first_name']+' get proxy . userinfo:'+str(update.message.from_user))
         self.logger.info(update.message.from_user)
-        reply_text = '代理分发\n获取MTP代理，可发送 /proxy mtp\n获取其他协议代理请按一下格式输入：\n/proxy <password> <type>\ntype可选参数:' \
+        reply_text = '代理分发\n获取MTP代理，可发送 /proxy mtp\n获取其他协议代理请按一下格式输入：\n/proxy [password] [type]\ntype可选参数:' \
                      '\nhttp socks v2ray switch ss mtp'
         if(len(context.args)):
             reply_text = self.configs.get_proxy(context.args)
@@ -55,6 +55,8 @@ class auController:
         reply_text = text
         if(text == 'hsh' and update.message.from_user['id']==self.configs.hsh_chat_id):
             reply_text = "你好，shihua，很高兴认识你。"
+        elif(text == 'au'):
+            reply_text = "叫我干嘛？你au爹不会给你做牛做马的，哼~"
         update.message.reply_text(reply_text)
 
     # 语音转文字 baidu api接口
