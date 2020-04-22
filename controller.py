@@ -54,7 +54,7 @@ class auController:
             reply_text = "你好，shihua，很高兴认识你。"
         elif(text == 'au'):
             reply_text = "叫我干嘛？你au爹不会给你做牛做马的，哼~"
-        elif(text == 'wzy' and update.message.from_user['id']==self.configs.wzy_chat_id):
+        elif(text == '说骚话' and update.message.from_user['id'] == self.configs.wzy_chat_id):
             reply_text = getwzywords.getwzywords()
         update.message.reply_text(reply_text)
 

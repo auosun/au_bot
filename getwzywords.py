@@ -12,5 +12,5 @@ def getwzywords():
     words = ''
     for i in range(3):
         words = getHitokoto()+","+words
-        time.sleep(1)
+        time.sleep(0.5)
     return words
