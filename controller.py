@@ -1,6 +1,7 @@
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, Filters
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from voiceTotext import voiceTotext
+import getwzywords
 import logging
 
 class auController:
@@ -13,7 +14,8 @@ class auController:
 
     # 开始提示
     def start(self,update,context):
-        chat_id = update.effective_chat.id
+        # chat_id = update.effective_chat.id
+        print(update.effective_chat)
         update.message.reply_text("你好,我叫 Au\n/help 获取帮助，你会喜欢我的")
 
     # hsh彩蛋
@@ -26,8 +28,7 @@ class auController:
 
     # help帮助信息
     def help(self,update,context):
-        user_info = update.message.from_user
-        reply_text = '你好，'+user_info['first_name']+'\n我是au,目前集成功能：\n' \
+        reply_text = '你好，'+update.message.from_user['first_name']+'\n我是au,目前集成功能：\n' \
                                            '1. /voice 语音转文字\n' \
                                            '2. /proxy 代理分发\n' \
                                            '3. 待添加……'
@@ -39,33 +40,27 @@ class auController:
         update.message.reply_text(reply_text)
 
     def proxy(self,update,context):
-        print(update.message.from_user['first_name']+' get proxy . userinfo:'+str(update.message.from_user))
-        self.logger.info(update.message.from_user)
         reply_text = '代理分发\n获取MTP代理，可发送 /proxy mtp\n获取其他协议代理请按一下格式输入：\n/proxy [password] [type]\ntype可选参数:' \
                      '\nhttp socks v2ray switch ss mtp'
         if(len(context.args)):
             reply_text = self.configs.get_proxy(context.args)
-            self.logger.info(reply_text)
         update.message.reply_text(reply_text)
 
     # 用户交流 复读用户发送消息 或者 其他
     def echo(self,update,context):
         text = update.message.text
-        self.logger.info(update.message.from_user['first_name']+" send message: "+text)
         reply_text = text
         if(text == 'hsh' and update.message.from_user['id']==self.configs.hsh_chat_id):
             reply_text = "你好，shihua，很高兴认识你。"
         elif(text == 'au'):
             reply_text = "叫我干嘛？你au爹不会给你做牛做马的，哼~"
+        elif(text == 'wzy' and update.message.from_user['id']==self.configs.wzy_chat_id):
+            reply_text = getwzywords.getwzywords()
         update.message.reply_text(reply_text)
 
     # 语音转文字 baidu api接口
     def voice_to_text(self,update,context):
-        print(update.message.from_user['first_name']+' voice to text . userinfo:'+str(update.message.from_user))
-        self.logger.info(update.message.from_user)
-        # 用户发送的语音文件 {'file_id': '*', 'file_size': 78679, 'file_path': 'https://api.telegram.org/file/*:*/voice/file_10.oga'}
         voice = context.bot.get_file(update.message.voice)
-        self.logger.info(update.message.from_user['first_name']+" --- voice to text --- "+voice['file_path'])
         text = voiceTotext(update.message.from_user['id'], voice, self.configs).run()
         keyboard = [[InlineKeyboardButton(text="Forward", url='https://t.me/share/url?url='+text)]]
         reply_markup = InlineKeyboardMarkup(keyboard)
