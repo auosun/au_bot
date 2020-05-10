@@ -27,6 +27,7 @@ class auConfigs():
     def get_token(self):
         return self.token
 
+    # 即将重构 删除get_proxy
     def get_proxy(self,args):
         text = '请仔细阅读 /proxy'
         if(len(args)==1 and args[0]=='mtp'):
