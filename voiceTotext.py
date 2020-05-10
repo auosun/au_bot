@@ -22,7 +22,7 @@ class voiceTotext:
         # 下载文件
         with open(voicepath,'wb') as f:
             voice.download(out=f)
-        self.logger.info("download success "+voicename)
+        # self.logger.info("download success "+voicename)
         return voicepath
 
     # oga转换wav
@@ -30,7 +30,7 @@ class voiceTotext:
         wavname = '{}.{}'.format(voicepath.split('.')[0],'wav')
         ogatowav = self.ffmpeg+" -v quiet -i "+voicepath+" "+wavname
         subprocess.call(ogatowav, shell=True)
-        self.logger.info("oga to wav success "+ogatowav)
+        # self.logger.info("oga to wav success "+ogatowav)
         return wavname
 
     # wav转换16k pcm
@@ -38,7 +38,7 @@ class voiceTotext:
         pcmname = '{}.{}'.format(wavpath.split('.')[0],'pcm')
         wavtopcm = self.ffmpeg+" -y -v quiet -i "+wavpath+" -acodec pcm_s16le -f s16le -ac 1 -ar 16000 "+pcmname
         subprocess.call(wavtopcm,shell=True)
-        self.logger.info("wav to pcm success "+wavtopcm)
+        # self.logger.info("wav to pcm success "+wavtopcm)
         return pcmname
 
     #文件读取
@@ -52,7 +52,7 @@ class voiceTotext:
         text = ''
         if(result['err_no']==0):
             text = result['result'][-1]
-            self.logger.info("voice to text success "+text)
+            self.logger.info(str(self.chat_id)+" voiceTotext "+text)
         return text
 
     def run(self):
@@ -64,5 +64,6 @@ class voiceTotext:
 
 
 if __name__ == '__main__':
-    print(voiceTotext('1231231', "voice/1123223001-1586079280.oga").run())
+    pass
+    # print(voiceTotext('1231231', "voice/1123223001-1586079280.oga").run())
 

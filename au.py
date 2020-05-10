@@ -1,5 +1,5 @@
 #coding:utf-8
-
+import os
 from config import auConfigs
 from controller import auController
 from telegram.ext import Updater
@@ -13,6 +13,8 @@ else:
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 
 def main():
+    if not os.path.exists('voice'):
+        os.makedirs('voice')
     updater = Updater(configs.get_token(),use_context=True,request_kwargs=configs.proxy)
     dispatcher = updater.dispatcher
     auController(dispatcher=dispatcher,config=configs)
