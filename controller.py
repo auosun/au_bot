@@ -1,8 +1,10 @@
-from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, Filters
+from telegram.ext import CommandHandler, MessageHandler, Filters
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from voiceTotext import voiceTotext
-import getwzywords
+from app.voiceTotext import voiceTotext
+from app import getwzywords,getProxy,bindAccount
+from v2ray_api.v2rayController import get_vmess
 import logging
+import time
 
 class auController:
 
@@ -15,7 +17,7 @@ class auController:
     # 开始提示
     def start(self,update,context):
         # chat_id = update.effective_chat.id
-        print(update.effective_chat)
+        # print(update.effective_chat)
         update.message.reply_text("你好,我叫 Au\n/help 获取帮助，你会喜欢我的")
 
     # hsh彩蛋
@@ -40,10 +42,14 @@ class auController:
         update.message.reply_text(reply_text)
 
     def proxy(self,update,context):
-        reply_text = '代理分发\n获取MTP代理，可发送 /proxy mtp\n获取其他协议代理请按一下格式输入：\n/proxy [password] [type]\ntype可选参数:' \
-                     '\nhttp socks v2ray switch ss mtp'
+        reply_text = '代理分发\n' \
+                     '获取MTP代理，可发送 /proxy mtp\n' \
+                     '获取其他协议代理请按一下格式输入：\n' \
+                     '/proxy [password] [type]\n' \
+                     'type可选参数:\n' \
+                     'http socks v2ray switch ss mtp'
         if(len(context.args)):
-            reply_text = self.configs.get_proxy(context.args)
+            reply_text = getProxy.getProxy(context.args)
         update.message.reply_text(reply_text)
 
     # 用户交流 复读用户发送消息 或者 其他
@@ -66,6 +72,27 @@ class auController:
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text(text,reply_markup=reply_markup)
 
+    def bind(self,update,context):
+        reply_text = '绑定账户\n' \
+                     '/bind [邮箱]\n' \
+                     '例: /bind 123@qq.com'
+        # print(update.message.from_user['id'])
+
+        if (len(context.args)==1):
+            reply_text = bindAccount.bindAccount(update.message.from_user,context.args[0])
+            # print(update.message.from_user)
+            # vmess_url = get_vmess(context.args[0])
+        update.message.reply_text(reply_text)
+
+
+    def link(self,update,context):
+        vmess_url = get_vmess(update.message.from_user['id'])
+        if(vmess_url):
+            update.message.reply_text(vmess_url)
+        else:
+            update.message.reply_text('失败')
+
+
     def error(self,update, context):
         """Log Errors caused by Updates."""
         self.logger.warning('Update "%s" caused error "%s"', update, context.error)
@@ -81,6 +108,8 @@ class auController:
         help_handler = CommandHandler('help', self.help)
         voice_handler = CommandHandler('voice',self.voice)
         proxy_handler = CommandHandler('proxy',self.proxy)
+        bind_handler = CommandHandler('bind',self.bind)
+        link_handler = CommandHandler('link',self.link)
         echo_handler = MessageHandler(Filters.text,self.echo)
         stt_handler = MessageHandler(Filters.voice,self.voice_to_text)
 
@@ -91,8 +120,11 @@ class auController:
         handlers.append(help_handler)
         handlers.append(voice_handler)
         handlers.append(proxy_handler)
+        handlers.append(bind_handler)
+        handlers.append(link_handler)
         handlers.append(echo_handler)
         handlers.append(stt_handler)
+
 
         for handler in handlers:
             self.dp.add_handler(handler)
