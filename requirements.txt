@@ -1,3 +1,0 @@
-baidu-aip
-python-telegram-bot
-pymysql
