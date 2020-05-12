@@ -12,7 +12,7 @@ def create_user_in_v2ray_server(ip,email):
         return 0
     try:
         c = Client(ip, 10085)
-        c.add_user('vmess-in', result[0][5], email, 0, 2)
+        c.add_user('vmess-in', result[0][4], email, 0, 2)
     except Exception:
         return 0
 
@@ -32,7 +32,7 @@ def get_vmess(id):
     result = mysql.mysql(sql)
     if (result == 1 or result == False):
         return 0
-    myuuid = result[0][5]
+    myuuid = result[0][4]
     # print(myuuid)
     vmess = {"port":"443",
             "ps": auConfigs().v2_address,
