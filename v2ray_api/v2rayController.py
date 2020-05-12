@@ -3,6 +3,7 @@ import uuid
 import mysql
 import json
 import base64
+from config.config import auConfigs
 
 def create_user_in_v2ray_server(ip,email):
     sql = "SELECT * FROM `user` WHERE `email` = '%s'"%(email)
@@ -34,16 +35,16 @@ def get_vmess(id):
     myuuid = result[0][5]
     # print(myuuid)
     vmess = {"port":"443",
-            "ps":"vv.chenxuhua.xyz",
+            "ps": auConfigs().v2_address,
             "tls":"tls",
             "id":str(uuid.UUID(myuuid)),
             "aid":"2",
             "v":"2",
-            "host":"vv.chenxuhua.xyz",
+            "host":auConfigs().v2_address,
             "type":"none",
             "path":"/f396791b/",
             "net":"ws",
-            "add":"vv.chenxuhua.xyz"}
+            "add":auConfigs().v2_address}
     url = json.dumps(vmess)
     str_url = base64.b64encode(url.encode("utf-8"))
     return "vmess://"+str_url.decode('utf-8')
