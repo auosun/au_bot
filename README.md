@@ -15,6 +15,7 @@ https://t.me/auosun_bot
 1. 增加 某2ray api接口
 2. 设置 某2ray和bot之间的绑定
 
+# 项目暂时搁置 开发新版机器人中
 
 
 
