@@ -7,9 +7,12 @@ import logging
 # 引入设置文件
 configs = auConfigs()
 
-def main():
+def atFirst():
     if not os.path.exists('voice'):
         os.makedirs('voice')
+
+def main():
+    atFirst()
     updater = Updater(configs.get_token(),use_context=True,request_kwargs=configs.proxy)
     dispatcher = updater.dispatcher
     auController(dispatcher=dispatcher,config=configs)

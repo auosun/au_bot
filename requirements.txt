@@ -1,6 +1,3 @@
 baidu-aip
-grpcio
-grpcio-tools
-PyMySQL
 python-telegram-bot
 

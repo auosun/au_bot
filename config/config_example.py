@@ -14,13 +14,6 @@ class auConfigs():
         # ffmpeg file address
         self.ffmpeg = ''
 
-        # show proxy password
-        self.proxy_password = ''
-
-        # proxy data
-        self.proxy_mtp = ''
-        self.proxy_http = ''
-        self.proxy_socks = ''
-        self.proxy_v2ray = ''
-        self.proxy_switch = ''
+    def get_token(self):
+        return self.token
 
