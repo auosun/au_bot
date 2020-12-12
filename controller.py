@@ -1,6 +1,7 @@
-from telegram.ext import CommandHandler, MessageHandler, Filters
+from telegram.ext import CommandHandler, MessageHandler, Filters,CallbackQueryHandler,CallbackContext
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from app.voiceTotext import voiceTotext
+from app.picToanime import picToanime
 import logging
 import time
 
@@ -9,8 +10,10 @@ class auController:
     def __init__(self,dispatcher,config):
         self.logger = logging.getLogger("auController")
         self.dp = dispatcher
+        self.bot = self.dp.bot
         self.__controller()
         self.configs = config
+        # self.pic = None
 
     # 开始提示
     def start(self,update,context):
@@ -57,10 +60,45 @@ class auController:
         reply_markup = InlineKeyboardMarkup(keyboard)
         firstText.edit_text(text,reply_markup=reply_markup)
 
+    def picture_to_anime(self,update,context):
+        # pic = context.bot.get_file(update.message.photo[-1].file_id)
+        self.pic_id = update.message.photo[-1].file_id
+        self.user_id = update.message.from_user['id']
+        keyboard = [
+            [
+                InlineKeyboardButton("宫崎骏", callback_data='1'),
+                InlineKeyboardButton("新海诚", callback_data='2'),
+            ],
+            [
+                InlineKeyboardButton("今敏红辣椒", callback_data='3'),
+                InlineKeyboardButton("取消", callback_data='4'),
+            ],
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        update.message.reply_text('选择你需要的风格:', reply_markup=reply_markup)
+        # firstText = update.message.reply_text('图片保存中……（时间较长，耐心等待；保存失败，返回404）')
+        # photo = picToanime(update.message.from_user['id'],pic,self.configs,firstText).run()
+        # update.message.reply_photo(open(photo,'rb'))
+        # firstText.edit_text('转换完成！✅')
+
+    def picture_to_anime_button(self,update,context):
+        query = update.callback_query
+        query.answer()
+        if (query.data != '4'):
+            query.edit_message_text(text=f"图片保存中……（时间较长，耐心等待；保存失败，返回404")
+            pic = context.bot.get_file(self.pic_id)
+            photo = picToanime(self.user_id,pic, self.configs, query,query.data).run()
+            self.bot.send_photo(chat_id=self.user_id, photo=open(photo,'rb'))
+        else:
+            query.edit_message_text(text=f"祝你快乐！")
+
+
+
     def error(self,update, context):
         """Log Errors caused by Updates."""
         self.logger.warning('Update "%s" caused error "%s"', update, context.error)
         update.message.reply_text("404")
+        # bot.send_message(chat_id=chat_id, text="I'm sorry Dave I'm afraid I can't do that.")
 
     # 添加至调度器
     def __controller(self):
@@ -73,6 +111,8 @@ class auController:
         voice_handler = CommandHandler('voice',self.voice)
         echo_handler = MessageHandler(Filters.text,self.echo)
         stt_handler = MessageHandler(Filters.voice,self.voice_to_text)
+        pta_handler = MessageHandler(Filters.photo, self.picture_to_anime)
+        pta_handler_button = CallbackQueryHandler(self.picture_to_anime_button)
 
 
         # 添加顺序代表了 优先级
@@ -82,6 +122,8 @@ class auController:
         handlers.append(voice_handler)
         handlers.append(echo_handler)
         handlers.append(stt_handler)
+        handlers.append(pta_handler)
+        handlers.append(pta_handler_button)
 
 
         for handler in handlers:

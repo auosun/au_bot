@@ -10,6 +10,8 @@ configs = auConfigs()
 def atFirst():
     if not os.path.exists('voice'):
         os.makedirs('voice')
+    if not os.path.exists('AnimeGAN'):
+        os.makedirs('AnimeGAN')
 
 def main():
     atFirst()
