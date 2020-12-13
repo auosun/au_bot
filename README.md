@@ -3,7 +3,7 @@ auosun's bot
 https://t.me/auosun_bot
 ## 功能
 1. 语音转文字
-2. 
+2. 动漫化图片
 
 ## 添加机器人提示：
 ```BotFather
@@ -11,13 +11,12 @@ help - something Au can do
 voice - how to use Voice to Text
 ```
 
-----
-安装教程：
+## 安装教程：
 ```
 conda install paddlepaddle==1.8.5 -c paddle
 pip install paddlehub
 ```
-----
+
 ## 更新日志：
 ### 1.0.3
 ##### 12/10-13
