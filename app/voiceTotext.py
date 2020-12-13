@@ -18,7 +18,7 @@ class voiceTotext:
         # 文件名格式为 < id > - < time >.oga
         voicename = '{}-{}.{}'.format(self.chat_id,int(time.time()),voice.file_path.split('.')[-1])
         # 将文件保存到地址 voice中
-        voicepath = '{}/{}'.format('voice',voicename)
+        voicepath = '{}/{}/{}'.format('trash','voice',voicename)
         # 下载文件
         with open(voicepath,'wb') as f:
             voice.download(out=f)

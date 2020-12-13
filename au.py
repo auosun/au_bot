@@ -8,10 +8,10 @@ import logging
 configs = auConfigs()
 
 def atFirst():
-    if not os.path.exists('voice'):
-        os.makedirs('voice')
-    if not os.path.exists('AnimeGAN'):
-        os.makedirs('AnimeGAN')
+    if not os.path.exists('trash/voice'):
+        os.makedirs('trash/voice')
+    if not os.path.exists('trash/AnimeGAN'):
+        os.makedirs('trash/AnimeGAN')
 
 def main():
     atFirst()

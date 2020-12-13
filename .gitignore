@@ -1,6 +1,6 @@
 config/config.py
 config_test.py
-voice/
+trash/voice/
 TestExample/
 __pycache__/
 .idea/
@@ -8,4 +8,5 @@ __pycache__/
 *.xml
 .DS_Store
 .vscode/
-AnimeGAN/
+trash/
+test.py

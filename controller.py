@@ -4,6 +4,8 @@ from app.voiceTotext import voiceTotext
 from app.picToanime import picToanime
 import logging
 import time
+import shutil
+import os
 
 class auController:
 
@@ -41,6 +43,17 @@ class auController:
                      '如遇翻译不准确，本人学艺不精，无法修正'
         update.message.reply_text(reply_text)
 
+    def trash(self,update,context):
+        reply_text = '非法指令！❌'
+        if update.effective_chat.id == self.configs.admin_chat_id:
+            shutil.rmtree('trash')
+            os.makedirs('trash/voice')
+            os.makedirs('trash/AnimeGAN')
+            reply_text = '垃圾清理完成！✅'
+
+        update.message.reply_text(reply_text)
+
+
     # 用户交流 复读用户发送消息 或者 其他
     def echo(self,update,context):
         text = update.message.text
@@ -53,6 +66,7 @@ class auController:
 
     # 语音转文字 baidu api接口
     def voice_to_text(self,update,context):
+        self.user_id = update.message.from_user['id']
         voice = context.bot.get_file(update.message.voice)
         firstText = update.message.reply_text('转换中……')
         text = voiceTotext(update.message.from_user['id'], voice, self.configs).run()
@@ -94,11 +108,12 @@ class auController:
 
 
 
+
     def error(self,update, context):
         """Log Errors caused by Updates."""
         self.logger.warning('Update "%s" caused error "%s"', update, context.error)
-        update.message.reply_text("404")
-        # bot.send_message(chat_id=chat_id, text="I'm sorry Dave I'm afraid I can't do that.")
+        # update.message.reply_text("404")
+        self.bot.send_message(chat_id=self.user_id, text="I'm sorry Dave I'm afraid I can't do that.")
 
     # 添加至调度器
     def __controller(self):
@@ -109,6 +124,7 @@ class auController:
         hsh_handler = CommandHandler('hsh',self.hsh)
         help_handler = CommandHandler('help', self.help)
         voice_handler = CommandHandler('voice',self.voice)
+        trash_handler = CommandHandler('trash', self.trash)
         echo_handler = MessageHandler(Filters.text,self.echo)
         stt_handler = MessageHandler(Filters.voice,self.voice_to_text)
         pta_handler = MessageHandler(Filters.photo, self.picture_to_anime)
@@ -120,6 +136,7 @@ class auController:
         handlers.append(hsh_handler)
         handlers.append(help_handler)
         handlers.append(voice_handler)
+        handlers.append(trash_handler)
         handlers.append(echo_handler)
         handlers.append(stt_handler)
         handlers.append(pta_handler)
