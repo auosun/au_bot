@@ -1,3 +1,4 @@
 baidu-aip
 python-telegram-bot
-
+paddlepaddle==1.8.5
+paddlehub

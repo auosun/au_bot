@@ -14,6 +14,9 @@ class auConfigs():
         # ffmpeg file address
         self.ffmpeg = ''
 
+        # admin account
+        self.admin_chat_id = ''
+
     def get_token(self):
         return self.token
 
