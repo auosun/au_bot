@@ -50,4 +50,5 @@ pip install paddlehub
 ## 感谢
 1. 百度云免费语音识别api
 2. paddlehub开源项目：https://github.com/PaddlePaddle/PaddleHub
+3. 一言：https://hitokoto.cn/
 
