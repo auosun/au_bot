@@ -2,6 +2,7 @@ from telegram.ext import CommandHandler, MessageHandler, Filters,CallbackQueryHa
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from app.voiceTotext import voiceTotext
 from app.picToanime import picToanime
+from app.getHitokoto import getHitokoto
 import logging
 import time
 import shutil
@@ -66,6 +67,8 @@ class auController:
 
     # 语音转文字 baidu api接口
     def voice_to_text(self,update,context):
+        if (self.configs.voiceTotext == 0):
+            return update.message.reply_text('语音转文字 - 暂时关闭')
         self.user_id = update.message.from_user['id']
         voice = context.bot.get_file(update.message.voice)
         firstText = update.message.reply_text('转换中……')
@@ -75,6 +78,8 @@ class auController:
         firstText.edit_text(text,reply_markup=reply_markup)
 
     def picture_to_anime(self,update,context):
+        if(self.configs.picToanime==0):
+            return update.message.reply_text('图片动漫风格化 - 暂时关闭')
         # pic = context.bot.get_file(update.message.photo[-1].file_id)
         self.pic_id = update.message.photo[-1].file_id
         self.user_id = update.message.from_user['id']
@@ -106,7 +111,10 @@ class auController:
         else:
             query.edit_message_text(text=f"祝你快乐！")
 
-
+    def get_hitokoto(self,update,context):
+        if (self.configs.getHitokoto == 0):
+            return update.message.reply_text('一言名言 - 暂时关闭')
+        update.message.reply_text(getHitokoto().run())
 
 
     def error(self,update, context):
@@ -120,27 +128,17 @@ class auController:
 
         handlers = []
 
-        start_handler = CommandHandler('start',self.start)
-        hsh_handler = CommandHandler('hsh',self.hsh)
-        help_handler = CommandHandler('help', self.help)
-        voice_handler = CommandHandler('voice',self.voice)
-        trash_handler = CommandHandler('trash', self.trash)
-        echo_handler = MessageHandler(Filters.text,self.echo)
-        stt_handler = MessageHandler(Filters.voice,self.voice_to_text)
-        pta_handler = MessageHandler(Filters.photo, self.picture_to_anime)
-        pta_handler_button = CallbackQueryHandler(self.picture_to_anime_button)
-
-
         # 添加顺序代表了 优先级
-        handlers.append(start_handler)
-        handlers.append(hsh_handler)
-        handlers.append(help_handler)
-        handlers.append(voice_handler)
-        handlers.append(trash_handler)
-        handlers.append(echo_handler)
-        handlers.append(stt_handler)
-        handlers.append(pta_handler)
-        handlers.append(pta_handler_button)
+        handlers.append(CommandHandler('start',self.start))
+        handlers.append(CommandHandler('hsh',self.hsh))
+        handlers.append(CommandHandler('help', self.help))
+        handlers.append(CommandHandler('voice',self.voice))
+        handlers.append(CommandHandler('trash', self.trash))
+        handlers.append(CommandHandler('quoto',self.get_hitokoto))
+        handlers.append(MessageHandler(Filters.text,self.echo))
+        handlers.append(MessageHandler(Filters.voice,self.voice_to_text))
+        handlers.append(MessageHandler(Filters.photo, self.picture_to_anime))
+        handlers.append(CallbackQueryHandler(self.picture_to_anime_button))
 
 
         for handler in handlers:
