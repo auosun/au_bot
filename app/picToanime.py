@@ -31,13 +31,13 @@ class picToanime:
     def convertPicture(self,picpath):
         self.query.edit_message_text('转换中……（时间较长，耐心等待；转换失败，返回404）')
         if(self.style=='1'):
-            model = hub.Module(name='animegan_v2_hayao_64', use_gpu=True)
+            model = hub.Module(name='animegan_v2_hayao_64', use_gpu=False)
         elif(self.style=='2'):
-            model = hub.Module(name='animegan_v2_shinkai_53', use_gpu=True)
+            model = hub.Module(name='animegan_v2_shinkai_53', use_gpu=False)
         elif(self.style=='3'):
-            model = hub.Module(name='animegan_v2_paprika_97', use_gpu=True)
+            model = hub.Module(name='animegan_v2_paprika_97', use_gpu=False)
         else:
-            model = hub.Module(name='animegan_v2_hayao_64', use_gpu=True)
+            model = hub.Module(name='animegan_v2_hayao_64', use_gpu=False)
         if not os.path.exists('trash/AnimeGAN/Result'):
             os.mkdir('trash/AnimeGAN/Result')
         shutil.rmtree('trash/AnimeGAN/Result')
