@@ -10,6 +10,9 @@ https://t.me/auosun_bot
 ```BotFather
 help - something Au can do 
 voice - how to use Voice to Text
+quoto - quoto from hitokoto
+trash - rm -rf *
+qr - how to use qrcode
 ```
 
 ## 安装教程：
@@ -26,6 +29,7 @@ pip install paddlehub
 3. 增加 **垃圾清理** ；可直接输入指令 `/trash` 管理员可用 (12-13)
 4. 增加 **一言名言** ；`/quoto` 可调用一言接口获取名人名言
 5. 增加 **功能开关** ；功能可以在config文件中选择是否调用 (12-22)
+6. 增加 **文本二维码** ；`/qr [文本内容]` 将文本内容转换为二维码 (12-27)
 
 ### Future
 1. **一言名言** 可以配合 `/quoto` 增加更多可选类型 (12-22)

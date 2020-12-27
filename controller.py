@@ -3,6 +3,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from app.voiceTotext import voiceTotext
 from app.picToanime import picToanime
 from app.getHitokoto import getHitokoto
+from app.getQrcode import getqrcode
 import logging
 import time
 import shutil
@@ -50,6 +51,7 @@ class auController:
             shutil.rmtree('trash')
             os.makedirs('trash/voice')
             os.makedirs('trash/AnimeGAN')
+            os.makedirs('trash/qrcode')
             reply_text = '垃圾清理完成！✅'
 
         update.message.reply_text(reply_text)
@@ -77,6 +79,7 @@ class auController:
         reply_markup = InlineKeyboardMarkup(keyboard)
         firstText.edit_text(text,reply_markup=reply_markup)
 
+    # 图片动漫风格化
     def picture_to_anime(self,update,context):
         if(self.configs.picToanime==0):
             return update.message.reply_text('图片动漫风格化 - 暂时关闭')
@@ -111,11 +114,29 @@ class auController:
         else:
             query.edit_message_text(text=f"祝你快乐！")
 
+    # 一言名言
     def get_hitokoto(self,update,context):
         if (self.configs.getHitokoto == 0):
             return update.message.reply_text('一言名言 - 暂时关闭')
         update.message.reply_text(getHitokoto().run())
 
+    # 文本qrcode
+    def get_qrcode(self,update,context):
+        if (self.configs.getQrcode == 0):
+            return update.message.reply_text('文字转二维码 - 暂时关闭')
+        reply_text = '文本二维码\n' \
+                     '/qr [文本]\n' \
+                     '例: /qr 123'
+        if (len(context.args) != 0):
+            content = ''
+            for arg in context.args:
+                content = content+' '+arg
+            content.strip(' ')
+            photo = getqrcode(content, update.message.from_user['id'])
+            self.bot.send_photo(chat_id=update.message.from_user['id'], photo=open(photo, 'rb'))
+            # update.message.reply_text(content)
+        else:
+            update.message.reply_text(reply_text)
 
     def error(self,update, context):
         """Log Errors caused by Updates."""
@@ -135,6 +156,7 @@ class auController:
         handlers.append(CommandHandler('voice',self.voice))
         handlers.append(CommandHandler('trash', self.trash))
         handlers.append(CommandHandler('quoto',self.get_hitokoto))
+        handlers.append(CommandHandler('qr',self.get_qrcode))
         handlers.append(MessageHandler(Filters.text,self.echo))
         handlers.append(MessageHandler(Filters.voice,self.voice_to_text))
         handlers.append(MessageHandler(Filters.photo, self.picture_to_anime))

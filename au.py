@@ -12,6 +12,8 @@ def atFirst():
         os.makedirs('trash/voice')
     if not os.path.exists('trash/AnimeGAN'):
         os.makedirs('trash/AnimeGAN')
+    if not os.path.exists('trash/qrcode'):
+        os.makedirs('trash/qrcode')
 
 def main():
     atFirst()
