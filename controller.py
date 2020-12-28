@@ -141,8 +141,8 @@ class auController:
     def error(self,update, context):
         """Log Errors caused by Updates."""
         self.logger.warning('Update "%s" caused error "%s"', update, context.error)
-        # update.message.reply_text("404")
-        self.bot.send_message(chat_id=self.user_id, text="I'm sorry Dave I'm afraid I can't do that.")
+        update.message.reply_text("404")
+        # self.bot.send_message(chat_id=self.user_id, text="I'm sorry Dave I'm afraid I can't do that.")
 
     # 添加至调度器
     def __controller(self):
